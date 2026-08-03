@@ -4,6 +4,13 @@ I built this as a full pass through an oil and gas production domain: design a r
 
 The idea is simple. Fields contain reservoirs, reservoirs contain wells, and wells produce oil, gas, and water every day. Statuses change over time (drilling → producing → shut-in, etc.), so the warehouse needs to track those changes properly, not just overwrite them.
 
+## Articles
+
+I wrote a 2-part write-up on this project:
+
+- [Part 1: From Flat Files to Relational Models](https://blog.dataengineerthings.org/from-flat-files-to-relational-models-architecting-oil-gas-production-data-8c9c1e684408)
+- [Part 2: From Relational Models to Dimensional Models](https://medium.com/@Oladayo/from-relational-models-to-dimension-models-architecting-oil-gas-production-data-26a9c780e686)
+
 ## What's in the folder
 
 ```
