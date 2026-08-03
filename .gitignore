@@ -1,0 +1,4 @@
+# dbt specific ignores
+end-to-end modelling; oil and gas case study/olap/target/
+end-to-end modelling; oil and gas case study/olap/dbt_packages/
+end-to-end modelling; oil and gas case study/olap/logs/

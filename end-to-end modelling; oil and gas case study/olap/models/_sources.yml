@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: oil_and_gas_src
+    database: data-modelling-case-studies
+    schema: oil_and_gas_dataset
+    tables:
+      - name: fields
+        columns:
+          - name: field_id
+            description: "The primary key for the table."
+            data_tests:
+              - unique
+              - not_null
+      - name: reservoirs
+        columns:
+          - name: reservoir_id
+            description: "The primary key for the table."
+            data_tests:
+              - unique
+              - not_null
+          - name: field_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('oil_and_gas_src', 'fields')
+                    field: field_id
+      - name: wells
+        columns:
+          - name: well_id
+            description: "The primary key for the table."
+            data_tests:
+              - unique
+              - not_null
+          - name: reservoir_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('oil_and_gas_src', 'reservoirs')
+                    field: reservoir_id
+      - name: production
+        data_tests:
+          - dbt_utils.unique_combination_of_columns:
+              arguments:
+                combination_of_columns:
+                  - well_id
+                  - date
+        columns:
+          - name: well_id
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('oil_and_gas_src', 'wells')
+                    field: well_id
+          - name: date
+            data_tests:
+              - not_null

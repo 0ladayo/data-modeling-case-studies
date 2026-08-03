@@ -1,0 +1,22 @@
+name: 'oil_and_gas_project'
+version: '1.0.0'
+config-version: 2
+
+profile: 'oil_and_gas_profile'
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  oil_and_gas_project:
+    +materialized: view
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table

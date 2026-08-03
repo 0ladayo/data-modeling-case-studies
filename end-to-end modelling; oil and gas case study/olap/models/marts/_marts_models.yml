@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: dim_wells
+    description: "Well attributes over time, including reservoir and field details."
+    columns:
+      - name: well_key
+        description: "Unique key for each well version."
+        tests:
+          - unique
+          - not_null
+      - name: well_id
+        description: "Natural well identifier."
+        tests:
+          - not_null
+      - name: well_name
+        description: "Well name."
+      - name: well_status
+        description: "Current status of the well."
+      - name: drilling_date
+        description: "Date the well was drilled."
+      - name: reservoir_name
+        description: "Reservoir the well belongs to."
+      - name: reservoir_discovery_date
+        description: "Date the reservoir was discovered."
+      - name: reservoir_status
+        description: "Status of the reservoir."
+      - name: field_name
+        description: "Field the well belongs to."
+      - name: field_discovery_date
+        description: "Date the field was discovered."
+      - name: field_status
+        description: "Status of the field."
+      - name: valid_from
+        description: "Start of this well version."
+      - name: valid_to
+        description: "End of this well version. Null if current."
+      - name: is_current
+        description: "True if this is the latest well version."
+
+  - name: dim_dates
+    description: "Calendar dates used to join production facts by day."
+    columns:
+      - name: date_key
+        description: "Date as YYYYMMDD integer."
+        tests:
+          - unique
+          - not_null
+      - name: calendar_date
+        description: "Calendar date."
+        tests:
+          - unique
+          - not_null
+      - name: date_year
+        description: "Year."
+      - name: date_month
+        description: "Month number."
+      - name: day_of_month
+        description: "Day of the month."
+      - name: quarter_name
+        description: "Quarter label, e.g. Q1."
+
+  - name: fct_production
+    description: "Daily oil, gas, and water production by well."
+    columns:
+      - name: well_key
+        description: "Links to dim_wells for the well version on that day."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_wells')
+                field: well_key
+      - name: well_id
+        description: "Natural well identifier."
+        tests:
+          - not_null
+      - name: production_date_key
+        description: "Links to dim_dates."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_key
+      - name: production_date
+        description: "Production calendar date."
+      - name: oil_production
+        description: "Oil produced that day."
+      - name: gas_production
+        description: "Gas produced that day."
+      - name: water_production
+        description: "Water produced that day."
