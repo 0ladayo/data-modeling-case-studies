@@ -8,7 +8,7 @@ CREATE TABLE Data_Modeling.Fields
 (
     Field_ID       INT PRIMARY KEY,
     Field_Name     VARCHAR(50)                NOT NULL,
-    Discovery_Date DATE,
+    Discovery_Date DATE                       NOT NULL,
     Field_Status   data_modeling.Field_Status NOT NULL,
     Updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -18,7 +18,7 @@ CREATE TABLE Data_Modeling.Reservoirs
     Reservoir_ID     INT PRIMARY KEY,
     Reservoir_Name   VARCHAR(50)                    NOT NULL,
     Field_ID         INT                            NOT NULL,
-    Discovery_Date   DATE,
+    Discovery_Date   DATE                           NOT NULL,
     Reservoir_Status data_modeling.Reservoir_Status NOT NULL,
     Updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (Field_ID) REFERENCES Data_Modeling.Fields (Field_ID)
@@ -39,9 +39,9 @@ CREATE TABLE Data_Modeling.Production
 (
     Date             DATE NOT NULL,
     Well_ID          INT  NOT NULL,
-    Oil_Production   DECIMAL(10, 2) DEFAULT 0.00,
-    Gas_Production   DECIMAL(10, 2) DEFAULT 0.00,
-    Water_Production DECIMAL(10, 2) DEFAULT 0.00,
+    Oil_Production   DECIMAL(10, 2) DEFAULT 0.00 CHECK(Oil_Production >= 0.00),
+    Gas_Production   DECIMAL(10, 2) DEFAULT 0.00 CHECK(Gas_Production >= 0.00),
+    Water_Production DECIMAL(10, 2) DEFAULT 0.00 CHECK(Water_Production >= 0.00),
     PRIMARY KEY (Date, Well_ID),
     FOREIGN KEY (Well_ID) REFERENCES Data_Modeling.Wells (Well_ID)
 );
