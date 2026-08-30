@@ -1,0 +1,27 @@
+name: 'healthcare_case_study'
+version: '1.0.0'
+config-version: 2
+require-dbt-version: [">=1.3.0", "<2.0.0"]
+
+profile: 'healthcare_profile'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  healthcare_case_study:
+    +materialized: view
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+snapshots:
+  healthcare_case_study:
+    +target_schema: snapshots

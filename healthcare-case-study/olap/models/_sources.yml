@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: healthcare_src
+    database: data-modelling-case-studies
+    schema: healthcare_dataset
+    tables:
+      - name: facilities
+        columns:
+          - name: facility_id
+            description: "The primary key for this table."
+            data_tests:
+              - unique
+              - not_null
+      - name: patients
+        columns:
+          - name: patient_id
+            description: "The primary key for this table."
+            data_tests:
+              - unique
+              - not_null
+          - name: gender 
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['male', 'female']
+      - name: procedures_catalogue
+        columns:
+          - name: procedure_catalogue_id
+            description: "The primary key for this table."
+            data_tests:
+              - unique
+              - not_null
+      - name: providers
+        columns:
+          - name: provider_id
+            description: "The primary key for this table."
+            data_tests:
+              - unique
+              - not_null
+      - name: medical_claims
+        columns:
+          - name: claim_id
+            description: "The primary key for this table."
+            data_tests:
+              - unique
+              - not_null
+          - name: patient_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: "source('healthcare_src', 'patients')"
+                    field: patient_id
+          - name: provider_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: "source('healthcare_src', 'providers')"
+                    field: provider_id
+          - name: facility_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: "source('healthcare_src', 'facilities')"
+                    field: facility_id
+          - name: procedure_catalogue_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: "source('healthcare_src', 'procedures_catalogue')"
+                    field: procedure_catalogue_id
+
+      
+    
