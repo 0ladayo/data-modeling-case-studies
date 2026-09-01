@@ -39,6 +39,7 @@ CREATE TABLE Data_Modeling.Production
 (
     Date             DATE NOT NULL,
     Well_ID          INT  NOT NULL,
+    Uptime           DECIMAL(10, 2) DEFAULT 0.00 CHECK (Uptime BETWEEN 0.00 AND 24.00),
     Oil_Production   DECIMAL(10, 2) DEFAULT 0.00 CHECK(Oil_Production >= 0.00),
     Gas_Production   DECIMAL(10, 2) DEFAULT 0.00 CHECK(Gas_Production >= 0.00),
     Water_Production DECIMAL(10, 2) DEFAULT 0.00 CHECK(Water_Production >= 0.00),

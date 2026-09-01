@@ -2,7 +2,13 @@
 
 with
     stg_wells as (
-        select well_id, well_name, well_status, drilling_date, reservoir_id, updated_at
+        select
+            well_id,
+            well_name,
+            well_status,
+            drilling_date,
+            reservoir_id,
+            updated_at
         from {{ ref('stg_wells') }}
     ),
 
@@ -18,7 +24,12 @@ with
     ),
 
     stg_fields as (
-        select field_id, field_name, discovery_date, field_status, updated_at
+        select
+            field_id,
+            field_name,
+            discovery_date,
+            field_status,
+            updated_at
         from {{ ref('stg_fields') }}
     )
 

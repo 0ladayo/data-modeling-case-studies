@@ -39,7 +39,7 @@ models:
         description: "True if this is the latest well version."
 
   - name: dim_dates
-    description: "Calendar dates used to join production facts by day."
+    description: "Calendar spine for production reporting (standalone; BI tools join on production_date_key)."
     columns:
       - name: date_key
         description: "Date as YYYYMMDD integer."
@@ -85,6 +85,8 @@ models:
                 field: date_key
       - name: production_date
         description: "Production calendar date."
+      - name: uptime
+        description: "Hours the well was operating that day (0–24)."
       - name: oil_production
         description: "Oil produced that day."
       - name: gas_production

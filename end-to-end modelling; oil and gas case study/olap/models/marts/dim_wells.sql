@@ -1,8 +1,9 @@
 with
-    wells_snapshot as (select * from {{ ref('wells_snapshot') }}),
+    wells_snapshot as (
+        select * from {{ ref('wells_snapshot') }}
+    ),
 
-    refactored_wells_snapshot as (
-
+    final as (
         select
             dbt_scd_id as well_key,
             well_id,
@@ -21,5 +22,4 @@ with
         from wells_snapshot
     )
 
-select *
-from refactored_wells_snapshot
+select * from final

@@ -26,7 +26,7 @@ The relational schema lives in `oltp/ddl.sql`. Four tables:
 - **Fields**: the field itself and its lifecycle status
 - **Reservoirs**: belong to a field
 - **Wells**: belong to a reservoir
-- **Production**: daily oil / gas / water volumes by well
+- **Production**: daily oil / gas / water volumes and uptime (hours) by well
 
 Enums cover field, reservoir, and well statuses so the source stays constrained.
 
@@ -47,8 +47,8 @@ The dbt project in `olap/` reads from BigQuery (`oil_and_gas_src`) and builds ou
 | Model | Role |
 | --- | --- |
 | `dim_wells` | SCD Type 2 well dimension (with reservoir and field attributes baked in) |
-| `dim_dates` | Calendar spine from 2019–2040 via `dbt_utils.date_spine` |
-| `fct_production` | Daily production facts, joined to the well version that was valid on that day |
+| `dim_dates` | Calendar spine from 2019–2040 via `dbt_utils.date_spine` (standalone; BI tools join on `production_date_key`) |
+| `fct_production` | Daily production facts with uptime, joined to the well version that was valid on that day |
 
 Point-in-time joins matter here: production on a given date should attach to the well status as it was then, not whatever it is today.
 
