@@ -1,0 +1,159 @@
+version: 2
+
+models:
+  - name: dim_patients
+    description: "Patient attributes over time (SCD Type 2)."
+    columns:
+      - name: patient_sk
+        description: "Unique key for each patient version."
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Natural patient identifier."
+        data_tests:
+          - not_null
+      - name: valid_from
+        description: "Start of this patient version."
+      - name: valid_to
+        description: "End of this patient version (exclusive)."
+      - name: is_current_record
+        description: "True if this is the latest patient version."
+
+  - name: dim_providers
+    description: "Provider attributes over time (SCD Type 2)."
+    columns:
+      - name: provider_sk
+        description: "Unique key for each provider version."
+        data_tests:
+          - unique
+          - not_null
+      - name: provider_id
+        description: "Natural provider identifier."
+        data_tests:
+          - not_null
+      - name: npi
+        description: "National Provider Identifier."
+      - name: valid_from
+        description: "Start of this provider version."
+      - name: valid_to
+        description: "End of this provider version (exclusive)."
+      - name: is_current_record
+        description: "True if this is the latest provider version."
+
+  - name: dim_facilities
+    description: "Facility attributes over time (SCD Type 2)."
+    columns:
+      - name: facility_sk
+        description: "Unique key for each facility version."
+        data_tests:
+          - unique
+          - not_null
+      - name: facility_id
+        description: "Natural facility identifier."
+        data_tests:
+          - not_null
+      - name: valid_from
+        description: "Start of this facility version."
+      - name: valid_to
+        description: "End of this facility version (exclusive)."
+      - name: is_current_record
+        description: "True if this is the latest facility version."
+
+  - name: dim_procedures_catalogue
+    description: "Procedure catalogue attributes over time (SCD Type 2)."
+    columns:
+      - name: procedure_catalogue_sk
+        description: "Unique key for each procedure catalogue version."
+        data_tests:
+          - unique
+          - not_null
+      - name: procedure_catalogue_id
+        description: "Natural procedure catalogue identifier."
+        data_tests:
+          - not_null
+      - name: valid_from
+        description: "Start of this procedure catalogue version."
+      - name: valid_to
+        description: "End of this procedure catalogue version (exclusive)."
+      - name: is_current_record
+        description: "True if this is the latest procedure catalogue version."
+
+  - name: dim_dates
+    description: "Calendar dates used by BI tools to join claim facts by day."
+    columns:
+      - name: date_key
+        description: "Date as YYYYMMDD integer."
+        data_tests:
+          - unique
+          - not_null
+      - name: calendar_date
+        description: "Calendar date."
+        data_tests:
+          - unique
+          - not_null
+      - name: date_year
+        description: "Year."
+      - name: date_month
+        description: "Month number."
+      - name: day_of_month
+        description: "Day of the month."
+      - name: quarter_name
+        description: "Quarter label, e.g. Q1."
+
+  - name: fct_medical_claims
+    description: "Medical claim facts joined to dimension versions valid on the procedure date."
+    columns:
+      - name: claim_id
+        description: "Natural claim identifier."
+        data_tests:
+          - unique
+          - not_null
+      - name: procedure_date_key
+        description: "Date key matching dim_dates.date_key."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_key
+      - name: procedure_date
+        description: "Procedure calendar date."
+      - name: patient_sk
+        description: "Links to dim_patients for the version on that day."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_sk
+      - name: provider_sk
+        description: "Links to dim_providers for the version on that day."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_providers')
+                field: provider_sk
+      - name: facility_sk
+        description: "Links to dim_facilities for the version on that day."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_facilities')
+                field: facility_sk
+      - name: procedure_catalogue_sk
+        description: "Links to dim_procedures_catalogue for the version on that day."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_procedures_catalogue')
+                field: procedure_catalogue_sk
+      - name: billed_amount
+        description: "Total amount billed."
+      - name: insurance_paid_amount
+        description: "Amount paid by insurance."
+      - name: patient_paid_amount
+        description: "Amount paid by the patient."

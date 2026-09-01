@@ -32,13 +32,21 @@ final as (
         m.patient_paid_amount
     from stg_medical_claims m
     left join dim_patients p1
-        on m.patient_id = p1.patient_id and timestamp(m.procedure_date) between p1.valid_from and p1.valid_to
+        on m.patient_id = p1.patient_id
+        and m.procedure_date >= cast(p1.valid_from as date)
+        and m.procedure_date < cast(p1.valid_to as date)
     left join dim_providers p2
-        on m.provider_id = p2.provider_id and timestamp(m.procedure_date) between p2.valid_from and p2.valid_to
-    left join dim_facilities f 
-        on m.facility_id = f.facility_id and timestamp(m.procedure_date) between f.valid_from and f.valid_to
+        on m.provider_id = p2.provider_id
+        and m.procedure_date >= cast(p2.valid_from as date)
+        and m.procedure_date < cast(p2.valid_to as date)
+    left join dim_facilities f
+        on m.facility_id = f.facility_id
+        and m.procedure_date >= cast(f.valid_from as date)
+        and m.procedure_date < cast(f.valid_to as date)
     left join dim_procedures_catalogue p3
-        on m.procedure_catalogue_id = p3.procedure_catalogue_id and timestamp(m.procedure_date) between p3.valid_from and p3.valid_to
+        on m.procedure_catalogue_id = p3.procedure_catalogue_id
+        and m.procedure_date >= cast(p3.valid_from as date)
+        and m.procedure_date < cast(p3.valid_to as date)
 )
 
 select * from final

@@ -2,8 +2,6 @@
 end-to-end modelling; oil and gas case study/olap/target/
 end-to-end modelling; oil and gas case study/olap/dbt_packages/
 end-to-end modelling; oil and gas case study/olap/logs/
-end-to-end modelling; oil and gas case study/olap/packages-lock.yml/
 healthcare-case-study/olap/dbt_packages/
 healthcare-case-study/olap/logs/
 healthcare-case-study/olap/target/
-healthcare-case-study/olap/package-lock.yml/

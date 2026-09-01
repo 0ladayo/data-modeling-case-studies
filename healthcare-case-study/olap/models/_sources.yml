@@ -23,7 +23,7 @@ sources:
             data_tests:
               - accepted_values:
                   arguments:
-                    values: ['male', 'female']
+                    values: ['Male', 'Female']
       - name: procedures_catalogue
         columns:
           - name: procedure_catalogue_id
