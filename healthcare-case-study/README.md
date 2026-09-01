@@ -20,8 +20,6 @@ olap/          # dbt project on BigQuery
 assets/        # ERD and dbt lineage diagrams
 ```
 
-
-
 ## Source model (OLTP)
 
 The relational schema lives in `oltp/ddl.sql`. Five tables:
@@ -46,16 +44,14 @@ The dbt project in `olap/` reads from BigQuery (`healthcare_src`) and builds out
 
 **Marts**
 
-
-| Model                      | Role                                                                                                           |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `dim_patients`             | SCD Type 2 patient dimension                                                                                   |
-| `dim_providers`            | SCD Type 2 provider dimension                                                                                  |
-| `dim_facilities`           | SCD Type 2 facility dimension                                                                                  |
-| `dim_procedures_catalogue` | SCD Type 2 procedure catalogue dimension                                                                       |
-| `dim_dates`                | Calendar spine from 2015 onward via `dbt_utils.date_spine` (standalone; BI tools join on `procedure_date_key`) |
-| `fct_medical_claims`       | Claim facts joined to the dimension versions valid on the procedure date                                       |
-
+| Model | Role |
+| --- | --- |
+| `dim_patients` | SCD Type 2 patient dimension |
+| `dim_providers` | SCD Type 2 provider dimension |
+| `dim_facilities` | SCD Type 2 facility dimension |
+| `dim_procedures_catalogue` | SCD Type 2 procedure catalogue dimension |
+| `dim_dates` | Calendar spine from 2015 onward via `dbt_utils.date_spine` (standalone; BI tools join on `procedure_date_key`) |
+| `fct_medical_claims` | Claim facts joined to the dimension versions valid on the procedure date |
 
 Point-in-time joins matter here: a claim on a given date should attach to patient, provider, facility, and procedure attributes as they were then, not whatever they are today.
 
@@ -71,4 +67,3 @@ Sources have uniqueness, not-null, relationships, and accepted values on gender.
 - BigQuery
 - dbt Core + `dbt_utils`
 - Git
-

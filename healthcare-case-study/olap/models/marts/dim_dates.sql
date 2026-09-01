@@ -1,11 +1,13 @@
-with date_spine as (
-    {{ dbt_utils.date_spine(
-        datepart="day",
-        start_date="cast('2015-01-01' as date)",
-        end_date="cast(date_add(current_date(), interval 10 year) as date)"
-    ) }}
-),
-final as (
+with
+    date_spine as (
+        {{ dbt_utils.date_spine(
+            datepart="day",
+            start_date="cast('2015-01-01' as date)",
+            end_date="cast(date_add(current_date(), interval 10 year) as date)"
+        ) }}
+    ),
+
+    final as (
         select
             cast(format_date('%Y%m%d', cast(date_day as date)) as int64) as date_key,
             cast(date_day as date) as calendar_date,
@@ -16,5 +18,4 @@ final as (
         from date_spine
     )
 
-select *
-from final
+select * from final
